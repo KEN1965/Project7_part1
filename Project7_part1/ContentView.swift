@@ -7,13 +7,24 @@
 
 import SwiftUI
 
+struct User: Codable {
+    let firstName: String
+    let lastName: String
+}
+
 struct ContentView: View {
-    //SwiftUIでは@Stateを使うようにUserDefaultなく記述できる
-    @AppStorage("tapCount") private var tapCount = 0
+    //複雑なデータの場合は少し作業が必要　Codable
+    @State private var user = User(firstName: "Talor", lastName: "Swift")
     
     var body: some View {
-        Button("Tap count: \(tapCount)") {
-            tapCount += 1
+        //取り出すためにはJSONDecoderが必要　この活用はまた次回以降！
+        
+        Button("Save User") {
+            let encoder = JSONEncoder()
+            
+            if let data = try? encoder.encode(user) {
+                UserDefaults.standard.set(data, forKey: "UserData")
+            }
         }
     }
 }
