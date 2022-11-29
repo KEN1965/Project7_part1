@@ -8,35 +8,13 @@
 import SwiftUI
 
 struct ContentView: View {
-    //リストを作っていきます。
-    @State private var number = [Int]()
-    @State private var currentNumber = 1
+    //SwiftUIでは@Stateを使うようにUserDefaultなく記述できる
+    @AppStorage("tapCount") private var tapCount = 0
     
     var body: some View {
-        //ツールバーに削除ボタンを設置
-        NavigationView {
-            VStack {//しかしリストを削除したい場合は、ForEachがよい
-                List {
-                    ForEach (number, id: \.self) {
-                        Text("Row \($0)")
-                    }//削除
-                    .onDelete(perform: removeRows)
-                }
-                //追加するボタンを作成
-                Button("Add Number") {
-                    number.append(currentNumber)
-                    currentNumber += 1
-                }
-            }
-            .navigationTitle("onDelet")
-            .toolbar {
-                EditButton()
-            }
+        Button("Tap count: \(tapCount)") {
+            tapCount += 1
         }
-    }
-    //削除できるように関数を作成
-    func removeRows(at offsets: IndexSet) {
-        number.remove(atOffsets: offsets)
     }
 }
 
