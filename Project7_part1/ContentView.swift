@@ -7,28 +7,30 @@
 
 import SwiftUI
 
-//ユーザーのを姓名格納する構造体  classに変更
-//classに変えると@Stateが監視できず機能しない。。
-//classを監視しているビューに通知して読み込めるようにする@publushed
-//user.classを次のように変更します
-class User: ObservableObject {
-    @Published var firstName = "Bilbo"
-    @Published var lastName = "Baggins"
+struct secondView: View {
+    //名前を送信するよう要求
+    //ボタンを押したらビューが閉じるようにしたい
+    @Environment(\.dismiss) var dismiss
+    
+    let name: String
+    var body: some View{
+        Button("Dismiss") {
+            dismiss()
+        }
+    }
 }
 
 struct ContentView: View {
-    //ユーザープロパティの作成 userプロパティの変更
-    @StateObject var user = User()
-    
+    //ビューを表示する方法。基本的な方法の一つシートをやっていきます。
+    @State private var showingSheet = false
     var body: some View {
-        VStack {
-            Text("Your name is \(user.firstName) \(user.lastName)")
-            
-            TextField("First name", text: $user.firstName)
-            TextField("Last name", text: $user.lastName)
-            
+        Button("Show Sheet") {
+            //Show the sheet
+            showingSheet.toggle()
         }
-
+        .sheet(isPresented: $showingSheet) {
+            secondView(name: "Kenichi Takahama")
+        }
     }
 }
 
